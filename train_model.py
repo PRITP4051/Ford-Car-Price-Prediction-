@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, PolynomialFeatures
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.tree import DecisionTreeRegressor
+from xgboost import XGBRegressor
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 
 # Load data
@@ -63,17 +64,19 @@ evaluate(Lasso(),"Lasso",X_train,X_test)
 # Decision Tree
 evaluate(DecisionTreeRegressor(),"DecisionTree",X_train,X_test)
 
+evaluate(XGBRegressor(random_state=42, n_estimators=100, learning_rate=0.1, max_depth=None),"XGBoost",X_train,X_test)
+
 scores = pd.DataFrame(results)
 
 scores.to_csv("reports/model_scores.csv",index=False)
 
 # Train final polynomial model
-final_model = LinearRegression()
-final_model.fit(X_train_poly,y_train)
+final_model = XGBRegressor(random_state=42, n_estimators=100, learning_rate=0.1, max_depth=None)
+final_model.fit(X_train,y_train)
 
 # Save models
-pickle.dump(final_model,open("models/polynomial_model.pkl","wb"))
-pickle.dump(poly,open("models/poly_transformer.pkl","wb"))
+pickle.dump(final_model,open("models/xgboost_model.pkl","wb"))
+pickle.dump(XGBRegressor,open("models/xgbregressor.pkl","wb"))
 pickle.dump(le,open("models/label_encoder.pkl","wb"))
 
 trans_cols = [c for c in X.columns if "transmission_" in c]

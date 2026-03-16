@@ -15,7 +15,7 @@ The system allows users to input vehicle features and obtain real-time price pre
 • End-to-end machine learning pipeline  
 • Feature engineering with Label Encoding and One-Hot Encoding  
 • Multiple regression model comparison  
-• Polynomial Regression model selection  
+• Xgboost model selection  
 • Interactive Streamlit web application  
 • Dataset insights dashboard  
 • Model performance visualization
@@ -27,6 +27,7 @@ The system allows users to input vehicle features and obtain real-time price pre
 - Ridge Regression
 - Lasso Regression
 - Decision Tree Regressor
+- Xgboost
 
 ## Tech Stack
 

@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import pickle
 
+from xgboost import XGBRegressor
+
 st.set_page_config(
     page_title="Ford Car Price Predictor",
     layout="wide",
@@ -12,8 +14,8 @@ st.set_page_config(
 st.title("🚗 Ford Car Price Prediction System")
 
 # Load models
-model = pickle.load(open("models/polynomial_model.pkl","rb"))
-poly = pickle.load(open("models/poly_transformer.pkl","rb"))
+model = pickle.load(open("models/xgboost_model.pkl","rb"))
+poly = pickle.load(open("models/xgbregressor.pkl","rb"))
 label_model = pickle.load(open("models/label_encoder.pkl","rb"))
 trans_cols = pickle.load(open("models/transmission_cols.pkl","rb"))
 fuel_cols = pickle.load(open("models/fuel_cols.pkl","rb"))
@@ -24,7 +26,7 @@ df = pd.read_csv("data/ford.csv")
 tab1,tab2,tab3 = st.tabs([
 "💰 Price Prediction",
 "📊 Data Insights",
-"📈 Model Performance"
+"📈 Model Performance"   
 ])
 
 # -------------------
@@ -94,9 +96,9 @@ with tab1:
         for col in fuel_cols:
             df_input[col] = 1 if col.split("_")[1]==fuel else 0
 
-        X_poly = poly.transform(df_input)
+        final_model = XGBRegressor(random_state=42, n_estimators=100, learning_rate=0.1, max_depth=None)
 
-        prediction = model.predict(X_poly)
+        prediction = final_model.predict(df_input)
 
         st.success(
             f"Estimated Price: £{prediction[0]:,.2f}"
