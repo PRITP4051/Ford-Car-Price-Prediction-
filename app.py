@@ -96,9 +96,8 @@ with tab1:
         for col in fuel_cols:
             df_input[col] = 1 if col.split("_")[1]==fuel else 0
 
-        final_model = XGBRegressor(random_state=42, n_estimators=100, learning_rate=0.1, max_depth=None)
 
-        prediction = final_model.predict(df_input)
+        prediction = model.predict(df_input)
 
         st.success(
             f"Estimated Price: £{prediction[0]:,.2f}"
